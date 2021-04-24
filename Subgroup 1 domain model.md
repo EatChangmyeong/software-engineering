@@ -32,6 +32,7 @@
 | - | - | - |
 | Render a user's information tied to his/her account | D | UserPageRenderer |
 | Form to accept new information to be changed | D | AccountUpdateForm |
+| Check if the given account information is valid | D | AccountInfoValidator |
 | Database for account information of all users | K | UserDatabase |
 | Container for encrypted passwords associated with users | K | PasswordStorage |
 | Update an account's information according to request | D | AccountUpdater |
@@ -54,6 +55,7 @@
 | - | - | - |
 | Retrieve medical history associated to that doctor | D | HistoryReader |
 | Database for medical history of each doctor | K | HistoryDatabase |
+| Render the list of medical history on screen | D | HistoryListRenderer |
 | Render one instance of medical history on screen | D | HistoryRenderer |
 
 ## Notify patient
@@ -67,20 +69,26 @@
 | Check if current user has any unread notifications | D | NotificationReader |
 | Show a list of notifications for current user | D | NotificationBoard |
 
-## Block user login*
+## Block user login
 
 * Actor: system
 * Actor's goal: forbid a user to log in for 24 hours if he/she fails to log in more than 5 times
 
 | Responsibility Description | Type | Concept Name |
 | - | - | - |
-| TODO |  |  |
+| Log for recent failed login attempts | K | FailedSignInLog |
+| Review recent login failure and block suspicious login attempts | D | SignInBlocker |
+| Revoke login blockage after 24 hours | D | SignInBlockTimer |
 
-## Find id/password*
+## Find id/password
 
-* Actor: user*
+* Actor: user
 * Actor's goal: find his/her id and password with questions to verify him/her, if he/she forgot them
 
 | Responsibility Description | Type | Concept Name |
 | - | - | - |
-| TODO |  |  |
+| Form to accept user's personal information for comparison | D | FindPasswordForm |
+| Verify whether the provided information is correct | D | FindPasswordChecker |
+| Database for account information of all users | K | UserDatabase |
+| Container for encrypted passwords associated with users | K | PasswordStorage |
+| Display the corresponding user's id or password | D | PasswordFoundPage |
