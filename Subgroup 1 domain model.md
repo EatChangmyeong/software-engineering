@@ -118,7 +118,7 @@ None worth mentioning.
 | Responsibility Description | Type | Concept Name |
 | - | - | - |
 | Coordinate actions all concepts associated with this use case | D | Controller |
-| Store recent notifications sent to each user | K | NotificationStore |
+| Store recent notifications sent to each user | K | NotificationStorage |
 | Show a list of notifications for current user | D | NotificationBoard |
 
 ### Associations
