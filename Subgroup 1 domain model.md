@@ -6,7 +6,7 @@
 | Responsibility Description | Type | Concept Name |
 | - | - | - |
 | Coordinate actions all concepts associated with this use case | D | Controller |
-| Form to accept user's personal information required for signup | D | SignUpForm |
+| Form to accept user's personal information required for signup | K | SignUpForm |
 | Check if the given account information is valid | D | AccountInfoValidator |
 | Database for account information of all users | K | UserDatabase |
 | Container for encrypted passwords associated with users | K | PasswordStorage |
@@ -23,6 +23,15 @@
 | AccountGenerator - UserDatabase | AccountGenerator inserts a new user record into UserDatabase | inserts data to |
 | AccountGenerator - PasswordStorage | AccountGenerator inserts an encrypted password data associated to a user into PasswordStorage | inserts data to |
 
+### Attributes
+
+* **SignUpForm**
+	* User type: determines whether the new user is doctor or patient
+	* Personal information: describes account information for new user
+* **AccountGenerator**
+	* User type *(copied from SignUpForm)*
+	* Personal information *(copied from SignUpForm)*
+
 ## Login
 
 * Actor: user
@@ -31,11 +40,9 @@
 | Responsibility Description | Type | Concept Name |
 | - | - | - |
 | Coordinate actions all concepts associated with this use case | D | Controller |
-| Form to input user's id and password | D | SignInForm |
+| Form to input user's id and password | K | SignInForm |
 | Verify whether the provided password is correct | D | PasswordChecker |
 | Container for encrypted passwords associated with users | K | PasswordStorage |
-| Review recent login failure and block suspicious login attempts | D | SignInBlocker |
-| Log for recent failed login attempts | K | FailedSignInLog |
 | Grant a user who provided correct password signed-in state | D | UserCredential |
 
 ### Associations
@@ -45,9 +52,15 @@
 | SignInForm - Controller | SignInForm requests user login with given id and password to Controller | conveys requests |
 | Controller - PasswordChecker | Controller sends id and password pair to PasswordChecker for verification | requests verification |
 | PasswordChecker - PasswordStorage | PasswordChecker retrieves password data linked to given id (if any) for comparison | retrieves password |
-| PasswordChecker - SignInBlocker | PasswordChecker checks if the specified user is in the blocked state | retrieves data |
-| Controller - FailedSignInLog | Controller logs a login attempt to FailedSignInLog if the password does not match or clears failed attempts | logs |
 | Controller - UserCredential | Controller requests UserCredential to issue a user logged in state | requests certification |
+
+### Attributes
+
+* **SignInForm**
+	* Id: used to determine which user is trying to sign in
+	* Password: used to confirm the user identity
+* **UserCredential**
+	* Id *(copied from SignInForm)*
 
 ## View/change information
 
@@ -58,7 +71,7 @@
 | - | - | - |
 | Coordinate actions all concepts associated with this use case | D | Controller |
 | Render a user's information tied to his/her account | D | UserPageRenderer |
-| Form to accept new information to be changed | D | AccountUpdateForm |
+| Form to accept new information to be changed | K | AccountUpdateForm |
 | Check if the given account information is valid | D | AccountInfoValidator |
 | Database for account information of all users | K | UserDatabase |
 | Container for encrypted passwords associated with users | K | PasswordStorage |
@@ -77,6 +90,15 @@
 | AccountUpdater - UserDatabase | AccountUpdater updates specified user details on UserDatabase | updates data |
 | AccountUpdater - PasswordStorage | AccountUpdater stores the new password in PasswordStorage | updates data |
 
+### Attributes
+
+* **UserPageRenderer**
+	* Personal information: describes account information for current user
+* **AccountUpdateForm**
+	* Personal information *(copied from UserPageRenderer)*: describes account information to be changed
+* **AccountUpdater**
+	* Personal information *(copied from AccountUpdateForm)*
+
 ## Logout
 
 * Actor: patient and doctor
@@ -89,6 +111,11 @@
 ### Associations
 
 None worth mentioning.
+
+### Attributes
+
+* **RevokeUserCredential**
+	* Id: used to determine which user is trying to sign out
 
 ## View medical history
 
@@ -110,6 +137,15 @@ None worth mentioning.
 | Controller - HistoryListRenderer | Controller sends a list of medical history for display | conveys data |
 | Controller - HistoryRenderer | Controller sends a detailed collection of medical history data for display | conveys data |
 
+### Attributes
+
+* **Controller**
+	* User's identity: used to determine which history instances are associated to the current user
+* **HistoryListRenderer**
+	* History list: list of medical history for the current user
+* **HistoryRenderer**
+	* History instance: a medical record the user is interested in
+
 ## Notify patient
 
 * Actor: system
@@ -128,48 +164,9 @@ None worth mentioning.
 | Controller - NotificationStore | Controller retrieves a list of notifications current user has received | retrieves data |
 | Controller - NotificationBoard | Controller sends a list of notifications for display | conveys data |
 
-## Block user login
+### Attributes
 
-* Actor: system
-* Actor's goal: forbid a user to log in for 24 hours if he/she fails to log in more than 5 times
-
-| Responsibility Description | Type | Concept Name |
-| - | - | - |
-| Review recent login failure and block suspicious login attempts | D | SignInBlocker |
-| Log for recent failed login attempts | K | FailedSignInLog |
-| Revoke login blockage after 24 hours | D | SignInBlockTimer |
-
-### Associations
-
-| Concept pair | Association Description | Association Name |
-| - | - | - |
-| SignInBlocker - FailedSignInLog | SignInBlocker receives recent history of login attempts for review | retrieves data |
-| SignInBlocker - SignInBlockTimer | SignInBlocker sets a 24-hour timer to revoke login blockage | sets timer |
-
-## Find id/password
-
-* Actor: user
-* Actor's goal: find his/her id and password with questions to verify him/her, if he/she forgot them
-
-| Responsibility Description | Type | Concept Name |
-| - | - | - |
-| Coordinate actions all concepts associated with this use case | D | Controller |
-| Form to accept user's personal information for comparison | D | FindPasswordForm |
-| Verify whether the provided information is correct | D | FindPasswordChecker |
-| Database for account information of all users | K | UserDatabase |
-| Container for encrypted passwords associated with users | K | PasswordStorage |
-| Display the corresponding user's id or password | D | PasswordFoundPage |
-
-### Associations
-
-| Concept pair | Association Description | Association Name |
-| - | - | - |
-| FindPasswordForm - Controller | FindPasswordForm requests account match along with personal information | conveys request |
-| Controller - FindPasswordChecker | Controller sends personal information to FindPasswordChecker for verification | requests verification |
-| FindPasswordChecker - UserDatabase | FindPasswordChecker retrieves matching user data from UserDatabase for comparison | retrieves data |
-| Controller - UserDatabase | Controller retrieves specified user's id for recovery | retrieves id |
-| Controller - PasswordStorage* | Controller retrieves specified user's password for recovery | retrieves password |
-| Controller - PasswordStorage* | Controller updates specified user's password | updates password |
-| Controller - PasswordFoundPage | Controller sends requested data (id or password) to PasswordFoundPage for display | conveys data |
-
-\* tentative; only one association will be selected
+* **Controller**
+	* User's identity: used to determine which notifications the current user has received
+* **NotificationBoard**
+	* Notification list: list of important notices for the current user
