@@ -125,7 +125,7 @@ None worth mentioning.
 
 | Concept pair | Association Description | Association Name |
 | - | - | - |
-| Controller - NotificationStore | Controller retrieves a list of notifications current user has received | retrieves data |
+| Controller - NotificationStorage | Controller retrieves a list of notifications current user has received | retrieves data |
 | Controller - NotificationBoard | Controller sends a list of notifications for display | conveys data |
 
 ## Block user login
