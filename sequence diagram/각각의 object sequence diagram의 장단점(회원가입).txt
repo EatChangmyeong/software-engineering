@@ -18,4 +18,7 @@ know the structure at once
 + easy to understand(intuitive)
 - longer communication chain
 
-
+(3)를 선택한 이유 : 
+Controller가 의미 그대로 Sign Up process를 control하고, 그렇다고 너무 많은 responsibility가 할당되지 않기 때문.
+responsibility는 최대한 분산시켜 다른 오브젝트에 분배하도록 설계했고, 각각의 오브젝트와 같이 일하면서 expert doer principle와 
+high cohesion principle을 어느정도 만족시킨다. 다만 그에 따른 비용으로 communication chain이 길고, coupling이 좀 생긴다는 단점이 있다. 
