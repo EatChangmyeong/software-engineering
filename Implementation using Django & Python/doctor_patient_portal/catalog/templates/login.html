@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 
 <html lang="en">
+
+    <link rel="stylesheet" href="../static/css/styles.css">
+
     <head>
         <meta charset="UTF-8">
         <title>Doctor Patient Portal</title>
@@ -9,14 +12,16 @@
     <body>
         {% if messages %}
             {% for message in messages %}
-                <p>{{ message }}</p>
+                <p class="hc" style="width: 240px;">{{ message }}</p>
             {% endfor %}
         {% endif %}
-        <form method="POST" action="{% url 'catalog:login_request' %}">
+        <form class="login-form" method="POST" action="{% url 'catalog:login_request' %}">
             {% csrf_token %}
             Username: <input type="text" name="username" id=""><br>
             Password: <input type="password" name="password" id=""><br>
-            <input type="submit" value="Login">
+            <div class="hc" style="width: 50px; height: 30px;">
+                <input type="submit" value="Login">
+            </div>
         </form>
     </body>
 </html>

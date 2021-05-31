@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 
 <html lang="en">
+    <link rel="stylesheet" href="../static/css/styles.css">
+
     <head>
         <meta charset="UTF-8">
         <title>Doctor Patient Portal</title>
@@ -12,10 +14,10 @@
         {% else %}
             {% if messages %}
                 {% for message in messages %}
-                    <p>{{ message }}</p>
+                    <p class="hc" style="width: 240px;">{{ message }}</p>
                 {% endfor %}
             {% endif %}
-            <form method="POST" action="{% url 'catalog:register_request' %}">
+            <form class="register-form" method="POST" action="{% url 'catalog:register_request' %}">
                 {% csrf_token %}
                 User type:
                     <input type="radio" name="usertype" id="doctor" value="DO"> <label for="doctor">Doctor</label>
@@ -26,7 +28,10 @@
                 Confirm password: <input type="password" name="password_confirm"><br>
                 Name: <input type="text" name="name" maxlength="20"><br>
                 Location: <input type="text" name="location" maxlength="30"><br>
-                <input type="submit" value="Register">
+                <div class="hc" style="width: 100px;">
+                    <input class="hc" style="width: 100px;" type="submit" value="Register">
+                </div>
+
             </form>
         {% endif %}
     </body>
