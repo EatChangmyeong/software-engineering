@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Doctor Patient Portal</title>
+        {% include 'header.html' %}
+    </head>
+    <body>
+        <div class="welcome-msg">
+            <h3>
+            {% if user.is_authenticated %}
+                Welcome, {{ user.accountinfo.name }}. <a href="{% url 'catalog:user_page' %}">Check your information</a> or <a href="{% url 'catalog:logout' %}">log out</a>
+            {% else %}
+                Welcome. <a href="{% url 'catalog:login' %}">Login</a> or <a href="{% url 'catalog:register' %}">register</a>
+            {% endif %}
+            </h3>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Doctor Patient Portal</title>
+        {% include 'header.html' %}
+    </head>
+    <body>
+        {% if user.is_authenticated %}
+            You should logout first to register new user. <a href="{% url 'catalog:logout' %}">Logout</a>
+        {% else %}
+            {% if messages %}
+                {% for message in messages %}
+                    <p class="hc" style="width: 240px;">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+            <form class="register-form" method="POST" action="{% url 'catalog:register_request' %}">
+                {% csrf_token %}
+                User type:
+                    <input type="radio" name="usertype" id="doctor" value="DO"> <label for="doctor">Doctor</label>
+                    <input type="radio" name="usertype" id="patient" value="PA"> <label for="patient">Patient</label><br>
+                Username: <input type="text" name="username" maxlength="150"><br>
+                Email: <input type="email" name="email"><br>
+                Password: <input type="password" name="password"><br>
+                Confirm password: <input type="password" name="password_confirm"><br>
+                Name: <input type="text" name="name" maxlength="20"><br>
+                Location: <input type="text" name="location" maxlength="30"><br>
+                <div class="hc" style="width: 100px;">
+                    <input class="hc" style="width: 100px;" type="submit" value="Register">
+                </div>
+
+            </form>
+        {% endif %}
+    </body>
+</html>
