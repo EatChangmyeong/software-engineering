@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Doctor Patient Portal</title>
-    {% include 'header.html' %}
-</head>
-<body>
-<h1>test</h1>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <title>Doctor Patient Portal</title>
+        {% include 'header.html' %}
+    </head>
+    <body>
+        {% if user.is_authenticated %}
+            Welcome, {{ user.accountinfo.name }}. <a href="{% url 'catalog:logout' %}">Log out</a>
+        {% else %}
+            Welcome. <a href="{% url 'catalog:login' %}">Login</a> or <a href="{% url 'catalog:register' %}">register</a>
+        {% endif %}
+    </body>
 </html>

@@ -1,8 +1,9 @@
+{% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
 
-<link rel="stylesheet" href="../static/css/styles.css">
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
 <head>
   <meta charset="UTF-8">
   <title>Doctor Patient Portal</title>
@@ -15,7 +16,7 @@
     <p>Welcome to Doctor Patient Portal, a website developed by <em>Group 4!</em></p>
   </div>
 
-  <img src="../static/image/doctor_wearing_a_mask.png" class="doctor-image">
+  <img src="{% static 'image/doctor_wearing_a_mask.png' %}" class="doctor-image">
 
   <div class="menu-bar">
     <button class="midium_button">Home</button>

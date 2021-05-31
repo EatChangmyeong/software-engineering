@@ -10,7 +10,7 @@ from catalog.models import AccountInfo
 
 
 class AccountInfoAdmin(admin.ModelAdmin):
-    list_display = ('name', 'uid', 'type', 'email')
+    list_display = ('django_user', 'name', 'type')
 
 # Register the admin class with the associated model
 admin.site.register(AccountInfo, AccountInfoAdmin)
