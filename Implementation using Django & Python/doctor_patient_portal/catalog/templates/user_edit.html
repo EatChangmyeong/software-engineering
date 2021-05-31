@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Doctor Patient Portal</title>
+        {% include 'header.html' %}
+    </head>
+    <body>
+        {% if messages %}
+            {% for message in messages %}
+                <p class="hc" style="width: 240px;">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+        <form class="user-edit-form" method="POST" action="{% url 'catalog:user_edit_request' %}">
+            <p>Empty fields will not be updated.</p>
+            
+            {% csrf_token %}
+            Current password (required): <input type="password" name="password_old"><br>
+            Username: {{ user.django_user.username }}<br>
+            Email: <input type="email" name="email"><br>
+            New password: <input type="password" name="password_new"><br>
+            Confirm password: <input type="password" name="password_confirm"><br>
+            Name: <input type="text" name="name" maxlength="20"><br>
+            Location: <input type="text" name="location" maxlength="30"><br>
+            <div class="hc" style="width: 100px;">
+                <input class="hc" style="width: 100px;" type="submit" value="Confirm">
+            </div>
+
+        </form>
+    </body>
+</html>

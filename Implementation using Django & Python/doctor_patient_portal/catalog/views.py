@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
-from django.contrib import auth#, messages
+from django.contrib import auth
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from catalog.models import AccountInfo
 
 def index(request):
@@ -101,7 +102,7 @@ def register_request(request):
             msgs.append('Location is too long.')
         
         if msgs:
-            return render('register.html', {
+            return render(request, 'register.html', {
                 'messages': msgs
             })
         
@@ -111,6 +112,78 @@ def register_request(request):
 
         auth.login(request, django_user)
         return redirect('catalog:index')
+
+@login_required
+def user_page(request):
+    context = {
+        'user': request.user
+    }
+    return render(request, 'user_page.html', context)
+
+@login_required
+def user_edit(request):
+    context = {
+        'user': request.user
+    }
+    return render(request, 'user_edit.html', context)
+
+@login_required
+def user_edit_request(request):
+    """Attempt user data modification."""
+    
+    try:
+        password_old = request.POST['password_old']
+        email = request.POST['email']
+        password_new = request.POST['password_new']
+        password_confirm = request.POST['password_confirm']
+        name = request.POST['name']
+        location = request.POST['location']
+    except:
+        return render(request, 'user_edit.html', {
+            'message': 'Something went wrong. Try again.'
+        })
+    else:
+        current = request.user
+        password_test = authenticate(
+            request,
+            username=current.username,
+            password=password_old
+        )
+        # correct password?
+        if current != password_test:
+            return render(request, 'user_edit.html', {
+                'messages': ['Your current password does not match.']
+            })
+        
+        # validity test
+        msgs = []
+        if password_new != password_confirm:
+            msgs.append('Your new password does not match.')
+        if len(name) > 20:
+            msgs.append('Name is too long.')
+        if len(location) > 30:
+            msgs.append('Location is too long.')
+        
+        if msgs:
+            return render(request, 'user_edit.html', {
+                'messages': msgs
+            })
+        
+        # actual update
+        if email:
+            current.email = email
+        if password_new:
+            current.set_password(password_new)
+        if name:
+            current.accountinfo.name = name
+        if location:
+            current.accountinfo.location = location
+        current.save()
+        current.accountinfo.save()
+        
+        # user logs out if password is changed. login again
+        auth.login(request, current)
+        return redirect('catalog:user_page')
 
 def logout(request):
     """User logout."""

@@ -10,7 +10,7 @@
         <div class="welcome-msg">
             <h3>
             {% if user.is_authenticated %}
-                Welcome, {{ user.accountinfo.name }}. <a href="{% url 'catalog:logout' %}">Log out</a>
+                Welcome, {{ user.accountinfo.name }}. <a href="{% url 'catalog:user_page' %}">Check your information</a> or <a href="{% url 'catalog:logout' %}">log out</a>
             {% else %}
                 Welcome. <a href="{% url 'catalog:login' %}">Login</a> or <a href="{% url 'catalog:register' %}">register</a>
             {% endif %}
